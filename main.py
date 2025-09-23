@@ -11,7 +11,6 @@ from telegram.ext import (
     Application, CommandHandler, MessageHandler, filters,
     ContextTypes, ConversationHandler
 )
-import os
 
 # الخطوات
 EMAIL, PASSWORD, SUBJECT, BODY, PDF, EMAILS = range(6)
@@ -85,7 +84,6 @@ async def get_emails(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     if update.message.document:
         file = await update.message.document.get_file()
-        from uuid import uuid4
         txt_path = user_dir / f"{uuid4()}_emails.txt"
         await file.download_to_drive(txt_path)
         lines = txt_path.read_text(encoding="utf-8").splitlines()
@@ -156,9 +154,7 @@ async def send_email(email_addr, password, to_addr, subject, body, attachment: P
 
 # ---- Main ----
 def main():
-    TOKEN = os.getenv("8107977783:AAGZC9-ZZR1PKfi0fTdy6mT2NdnSYVVyb0Y")
-    if not TOKEN:
-        raise ValueError("❌ مافي توكن، ضيف TOKEN في Render Environment Variables")
+    TOKEN = "8107977783:AAGZC9-ZZR1PKfi0fTdy6mT2NdnSYVVyb0Y"
 
     app = Application.builder().token(TOKEN).build()
 
